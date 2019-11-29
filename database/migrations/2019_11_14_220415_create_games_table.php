@@ -16,7 +16,7 @@ class CreateGamesTable extends Migration
     public function up(): void
     {
         Schema::create('games', static function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('format');
             $table->timestamps();
             $table->softDeletes();

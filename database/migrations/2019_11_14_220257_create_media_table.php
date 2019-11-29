@@ -16,10 +16,20 @@ class CreateMediaTable extends Migration
     public function up(): void
     {
         Schema::create('media', static function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->nullableUuidMorphs('mediable');
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create('media_translations', static function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('media_id');
+            $table->string('locale')->index();
+            $table->string('name');
+
+            $table->unique(['media_id', 'locale']);
+            $table->foreign('media_id')->references('id')->on('media')->onDelete('cascade');
         });
     }
 
@@ -30,6 +40,7 @@ class CreateMediaTable extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('media_translations');
         Schema::dropIfExists('media');
     }
 }

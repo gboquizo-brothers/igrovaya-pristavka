@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Concerns;
+namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
 
 trait Uuidable
 {
-    protected static function bootUuidable()
+    protected static function bootUuidable(): void
     {
         static::creating(static function ($model) {
             if (!$model->getKey()) {
@@ -15,12 +15,12 @@ trait Uuidable
         });
     }
 
-    public function getIncrementing()
+    public function getIncrementing(): bool
     {
         return false;
     }
 
-    public function getKeyType()
+    public function getKeyType(): string
     {
         return 'string';
     }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\Uuidable;
+use App\Models\Traits\Uuidable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,6 +11,11 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, Uuidable;
 
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
     public $incrementing = false;
 
     /**
