@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Book;
+use App\Models\Factory;
 use App\Models\Media;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
@@ -29,5 +30,9 @@ class ProductsTableSeeder extends Seeder
 
             $media->mediable()->associate($book)->save();
         }
+
+        $factory = Factory::create();
+
+        $factory->products()->sync($product);
     }
 }
