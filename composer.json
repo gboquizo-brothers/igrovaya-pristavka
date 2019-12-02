@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-json": "*",
         "appstract/laravel-blade-directives": "^1.7",
         "astrotomic/laravel-translatable": "^11.6",
@@ -33,6 +33,7 @@
         "fruitcake/laravel-telescope-toolbar": "^1.1",
         "fzaninotto/faker": "^1.4",
         "gboquizo/sweet-routes": "^2.0",
+        "gboquizo/morpheable": "@dev",
         "laravel/homestead": "^9.4",
         "laravel/ui": "^1.1",
         "mockery/mockery": "^1.0",
@@ -51,6 +52,12 @@
             "dont-discover": []
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/morpheable"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": ["core/", "app/"]
