@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Uuidable;
+use App\Enums\MediaFormatsEnum;
 use App\Models\Translations\MediaTranslation;
-use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
+use BenSampo\Enum\Traits\CastsEnums;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Media extends Model
+class Media extends Product
 {
-    use Translatable, Uuidable;
+    use CastsEnums;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -19,24 +20,39 @@ class Media extends Model
     public $incrementing = false;
 
     /**
-     * Name of translation model.
-     *
-     * @var string
-     */
-    public $translationModel = MediaTranslation::class;
-
-    /**
-     * The attributes that are translatable.
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
-    public $translatedAttributes = ['name'];
+    protected $casts = ['format' => 'string'];
 
     /**
-     * The relations to eager load on every query.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $with = ['translations'];
+    protected $fillable = ['format'];
 
+    /**
+     * Determine whether an attribute should be cast to a enum.
+     *
+     * @var array
+     */
+    protected $enumCasts = ['format' => MediaFormatsEnum::class];
+
+    /**
+     * @return MorphTo
+     */
+    public function mediable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function product(): MorphOne
+    {
+        return $this->morphOne(Product::class, 'productable');
+    }
 }
