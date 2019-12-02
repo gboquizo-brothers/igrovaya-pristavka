@@ -17,6 +17,10 @@ class ProductsTableSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $product = Product::create();
 
+            $product->name = 'nombre';
+
+            $product->save();
+
             $media = Media::create();
 
             $book = Book::create();

@@ -3,21 +3,21 @@
 namespace App\Models;
 
 use App\Enums\MediaFormatsEnum;
-use App\Models\Translations\MediaTranslation;
 use BenSampo\Enum\Traits\CastsEnums;
+use Boquizo\Inheritance\Morpheable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Media extends Product
 {
-    use CastsEnums;
+    use CastsEnums, Morpheable;
 
     /**
-     * Indicates if the IDs are auto-incrementing.
+     * The attributes that are morpheables.
      *
-     * @var bool
+     * @var array
      */
-    public $incrementing = false;
+    protected $morpheables = ['name'];
 
     /**
      * The attributes that should be cast to native types.

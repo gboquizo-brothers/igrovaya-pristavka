@@ -2,10 +2,13 @@
 
 namespace App\Models\Translations;
 
+use App\Models\Traits\Uuidable;
 use Illuminate\Database\Eloquent\Model;
 
-class MediaTranslation extends Model
+class ProductTranslation extends Model
 {
+    use Uuidable;
+
     /**
      * Indicates if the model should be timestamped.
      *
