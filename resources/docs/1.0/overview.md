@@ -9,14 +9,14 @@
 
 Write something cool.. 🦊
 
-Para jugar entra en [Buscaminas con jQuery](https://iesgrancapitan-dwec.github.io/Buscaminas-Guillermo/)
+Para acceder a la página principal, [console.develop](http://console.develop/)
 
 **********
 
-#### <img src="../../images/prueba1.svg" width="20px"> Estoy haciendo pruebas, ¿puedo ver el icono? <img src="../../images/prueba1.svg" width="20px">
+#### <img src="/images/prueba1.svg" width="20px"> Estoy haciendo pruebas, ¿puedo ver el icono? <img src="/images/prueba1.svg" width="20px">
 
-Sí, para ello **selecciona el nivel de juego**, accede al modo consola del navegador e introduce ```buscaminas.mostrar()```.
+Veamos si se visualiza **el gif**, debes verlo abajo y si no ```emosido engañados```.
 
-![Texto alternativo](../../images/prueba.gif)
+![Texto alternativo](/images/prueba.gif)
 
 **********
