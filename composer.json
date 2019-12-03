@@ -13,6 +13,7 @@
         "appstract/laravel-blade-directives": "^1.7",
         "astrotomic/laravel-translatable": "^11.6",
         "bensampo/laravel-enum": "^1.26",
+        "binarytorch/larecipe": "^2.2",
         "consoletvs/charts": "^6.5",
         "davejamesmiller/laravel-breadcrumbs": "^5.3",
         "fideloper/proxy": "^4.0",
