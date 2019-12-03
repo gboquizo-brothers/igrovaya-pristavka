@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79f91addfe4727be07e1a4be8794fa19",
+    "content-hash": "924691bf85cbb84090b34509b17d91b2",
     "packages": [
         {
             "name": "appstract/laravel-blade-directives",
@@ -300,6 +300,49 @@
                 "markdown"
             ],
             "time": "2019-11-08T00:41:14+00:00"
+        },
+        {
+            "name": "binarytorch/larecipe-dark-theme",
+            "version": "v0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/saleem-hadad/larecipe-dark-theme.git",
+                "reference": "36509de5b79621cf8b519c8b1283adae83d4d43f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/saleem-hadad/larecipe-dark-theme/zipball/36509de5b79621cf8b519c8b1283adae83d4d43f",
+                "reference": "36509de5b79621cf8b519c8b1283adae83d4d43f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BinaryTorch\\LaRecipeDarkTheme\\LaRecipeDarkThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BinaryTorch\\LaRecipeDarkTheme\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Official LaRecipe Dark Theme Mode.",
+            "keywords": [
+                "docs",
+                "documentation",
+                "laravel",
+                "larecipe"
+            ],
+            "time": "2019-09-12T21:40:48+00:00"
         },
         {
             "name": "consoletvs/charts",
