@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 
-trait Morpheable
+trait Morphable
 {
     /**
      * Morphed attributes.
@@ -29,27 +29,27 @@ trait Morpheable
     {
         $model = parent::newFromBuilder($attributes, $connection);
 
-        // This is the entry point for morpheables attributes.
-        if (isset($model->morpheables) && (config('inheritance.spread') ?? true)) {
-            $this->mergeMorpheables($model);
+        // This is the entry point for morphables attributes.
+        if (isset($model->morphables) && (config('inheritance.spread') ?? true)) {
+            $this->mergeMorphables($model);
         }
 
         return $model;
     }
 
     /**
-     * Merge all morpheable attributes.
+     * Merge all morphable attributes.
      *
      * @param Model $model
      */
-    private function mergeMorpheables(Model $model): void
+    private function mergeMorphables(Model $model): void
     {
         $object = $model;
 
         foreach ($this->inheritance($model) as $parent) {
             $object = $object->{lcfirst(class_basename($parent))};
 
-            if ($object !== null && !empty($model->morpheables)) {
+            if ($object !== null && !empty($model->morphables)) {
                 $this->mergeAttributes($model, $object);
             }
         }
@@ -120,7 +120,7 @@ trait Morpheable
      */
     private function fillAttributes(Model $model, $attributes = []): void
     {
-        foreach ($model->morpheables as $attribute) {
+        foreach ($model->morphables as $attribute) {
             if (array_key_exists($attribute, $attributes)) {
                 foreach (['attributes', 'morphed'] as $fill) {
                     $model->$fill[$attribute] = $attributes[$attribute];
