@@ -1,5 +1,15 @@
+# See https://github.com/RehanSaeed/EditorConfig/releases for release notes.
+# See https://github.com/RehanSaeed/EditorConfig for updates to this file.
+# See http://EditorConfig.org for more information about .editorconfig files.
+
+##########################################
+# Common Settings
+##########################################
+
+# This file is the top-most EditorConfig file
 root = true
 
+# All Files
 [*]
 charset = utf-8
 end_of_line = lf
@@ -8,8 +18,22 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
+# JSON Files
+[*.{json,json5,webmanifest}]
+indent_size = 2
+
+# YAML Files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Markdown Files
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{yml,yaml}]
+# Web Files
+[*.{js,jsm,ts,tsx,css,sass,scss,less,svg,vue}]
 indent_size = 2
+
+# Batch Files
+[*.{cmd,bat}]
+end_of_line = crlf
