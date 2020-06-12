@@ -4,20 +4,20 @@ namespace App\Models;
 
 use App\Enums\MediaFormatsEnum;
 use BenSampo\Enum\Traits\CastsEnums;
-use Boquizo\Inheritance\Morpheable;
+use Boquizo\Inheritance\Morphable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Media extends Product
 {
-    use CastsEnums, Morpheable;
+    use CastsEnums, Morphable;
 
     /**
-     * The attributes that are morpheables.
+     * The attributes that are morphables.
      *
      * @var array
      */
-    protected $morpheables = ['name'];
+    protected $morphables = ['name'];
 
     /**
      * The attributes that should be cast to native types.
