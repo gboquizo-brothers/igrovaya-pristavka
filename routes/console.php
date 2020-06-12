@@ -1,18 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
+Artisan::command('ide-helper:all', function () {
+    foreach (['ide-helper:generate', 'ide-helper:meta', 'ide-helper:models'] as $command) {
+        if ($command === 'ide-helper:models') {
+            $attribute = ['--nowrite' => true];
+        }
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
-
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->describe('Display an inspiring quote');
+        $this->info("Launching {$command}...");
+        Artisan::call($command, $attribute ?? []);
+        sleep(1);
+    }
+})->describe('Generate all ide helper for PhpStorm');

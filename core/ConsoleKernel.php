@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Console\Commands\DeployCommand;
-use App\Console\Commands\IdeHelperCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel;
 
@@ -15,7 +14,6 @@ class ConsoleKernel extends Kernel
      * @var array
      */
     protected $commands = [
-        IdeHelperCommand::class,
         DeployCommand::class
     ];
 
