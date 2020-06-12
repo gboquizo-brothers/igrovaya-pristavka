@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Process\Process;
@@ -11,11 +12,11 @@ use Symfony\Component\Process\Process;
 class DeployCommand extends Command
 {
     /**
-     * Name of the deploy command with environment1
+     * Name of deploy command with environment
      *
      * @var string
      */
-    protected $signature = 'deploy --env';
+    protected $signature = 'deploy {env? : Environment} {--output : Show output}';
 
     /**
      * The console command description.
@@ -25,11 +26,19 @@ class DeployCommand extends Command
     protected $description = 'Deploy all necessary into the server';
 
     /**
-     * Process instance.
-     *
      * @var Process
      */
-    protected $process;
+    protected Process $process;
+
+    /**
+     * @var array
+     */
+    protected array $environments = ['dev', 'development', 'prod', 'production'];
+
+    /**
+     * @var bool
+     */
+    protected bool $console = false;
 
     /**
      * Execute the console command.
@@ -38,63 +47,136 @@ class DeployCommand extends Command
      */
     public function handle(): void
     {
-        $this->runCommands(['composer install', 'npm install', 'npm run routes']);
+        $environment = $this->checkEnvironment();
 
-        switch ($this->option('env')) {
-            case 'development':
-            case 'dev':
-                $this->command('npm run dev')->stop(0);
-                break;
-            case 'prod':
-            case 'production':
-                $this->command('npm run production')->stop(0);
-                $this->runCommands(['cache:clear', 'route:cache', 'view:clear'], true);
-                break;
-            default:
-                $this->info('Not environment chosen. JS and CSS not preprocessed.');
-                break;
+        if (! $this->option('output')) {
+            $this->console = $this->choice('Do you want to see the output?', ['yes', 'no'], 'no') !== 'no';
+        }
+
+        $this->selectEnvironment($environment);
+
+        $this->info('All done!');
+    }
+
+    /**
+     * Run commands for development environment.
+     *
+     * @return void
+     */
+    protected function development(): void
+    {
+        $this->runCommands(['composer install', 'npm install', 'npm run dev']);
+    }
+
+    /**
+     * Run commands for production environment.
+     *
+     * @return void
+     */
+    protected function production(): void
+    {
+        $this->runCommands(['composer install --no-dev', 'npm install --production', 'npm run production']);
+        $this->artisanCommands(['config:cache', 'route:trans:cache', 'view:clear']);
+    }
+
+    /**
+     * Check if has environment;
+     *
+     * @return string
+     */
+    protected function checkEnvironment(): string
+    {
+        $environment = $this->argument('env');
+
+        if ($environment === null || ! in_array($environment, $this->environments, true)) {
+            $environment = $this->choice('What environment?', ['development', 'production'], 'development');
+        }
+
+        return $environment;
+    }
+
+    /**
+     * Run commands in console.
+     *
+     * @param array $commands
+     *
+     * @return void
+     */
+    protected function runCommands(array $commands): void
+    {
+        foreach ($commands as $command) {
+            if (! $this->console) {
+                $this->line("Launching {$command}...");
+            }
+            $this->command($command, 180)->stop(0);
         }
     }
 
     /**
-     * Run a command in console.
+     * Run artisan commands.
      *
-     * @param  array  $commands
-     * @param  bool  $artisan
-     * @return DeployCommand
+     * @param array $commands
      */
-    private function runCommands(array $commands, $artisan = false): DeployCommand
+    protected function artisanCommands(array $commands): void
     {
-        if (!$artisan) {
-            foreach ($commands as $command) {
-                $this->info("Launching {$command}...");
-                $this->command($command, 180)->stop(0);
+        foreach ($commands as $command) {
+            if (! $this->console) {
+                $this->line("Launching {$command}...");
             }
+            Artisan::call($command);
+            sleep(5);
         }
-
-        if ($artisan) {
-            foreach ($commands as $command) {
-                $this->info("Launching {$command}...");
-                Artisan::call($command);
-                sleep(1);
-            }
-        }
-
-        return $this;
     }
 
     /**
      * Run a command.
      *
-     * @param $string
-     * @param  integer  $timeout
+     * @param  string|array  $string
+     * @param  int  $timeout
+     *
      * @return Process
      */
-    private function command($string, $timeout = 60): Process
+    protected function command($string, int $timeout = 60): Process
     {
         $this->process = new Process($string);
-        $this->process->setTimeout($timeout)->run();
+        $this->process->setTimeout($timeout)->run($this->showOutput());
+        $this->process->getOutput();
 
         return $this->process;
+    }
+
+    /**
+     * Show output for commands.
+     *
+     * @return Closure|null
+     */
+    protected function showOutput(): ?Closure
+    {
+        if ($this->console || $this->option('output')) {
+            return static function ($type, $buffer) {
+                echo $buffer;
+            };
+        }
+
+        return null;
+    }
+
+    /**
+     * Select environment.
+     *
+     * @param string $environment
+     */
+    protected function selectEnvironment(string $environment): void
+    {
+        switch ($environment) {
+            case 'development':
+            case 'dev':
+                $this->development();
+                break;
+            case 'prod':
+            case 'production':
+                $this->production();
+                break;
+        }
     }
 }
