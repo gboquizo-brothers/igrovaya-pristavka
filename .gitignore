@@ -1,3 +1,4 @@
+# Laravel default
 /node_modules
 /public/hot
 /public/storage
@@ -10,17 +11,32 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# Modules
 /phpmyadmin
+/laradock
+
+# IDE and Text editors
 /.idea
-/.vagrant
 /.vscode
-.env.*
-!.env.example
+
+# IDE Helper
 _ide_helper.php
 _ide_helper_models.php
+.phpstorm.meta.php
+
+# PHP CS Fixer
 .php_cs.cache
 .DS_Store
-.phpstorm.meta.php
+
+# Vagrant
+/.vagrant
 Vagrantfile
 aliases
 after.sh
+
+# Public folder
+public/*
+
+# Others
+resources/js/routes

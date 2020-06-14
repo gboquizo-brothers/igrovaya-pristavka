@@ -1,0 +1,6 @@
+*
+!.gitignore
+!robots.txt
+!.htaccess
+!index.php
+!web.config
