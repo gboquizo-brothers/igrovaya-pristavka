@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
 
     /*
@@ -12,7 +10,7 @@ return [
     | Allows users registration. It is set true to default.
     |
     */
-    'register' => true,
+    'registration' => env('IGROVAYA_REGISTRATION', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +20,7 @@ return [
     | Allows reset password to the registered user. It is set true to default.
     |
     */
-    'reset' => false,
+    'reset_password' => env('IGROVAYA_RESET_PASSWORD', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +31,7 @@ return [
     | This value is established false by default.
     |
     */
-    'verify' => true,
+    'email_verification' => env('IGROVAYA_EMAIL_VERIFICATION', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,5 +42,5 @@ return [
     | This value is established false by default.
     |
     */
-    'confirm' => false,
+    'email_confirmation' => env('IGROVAYA_RANK_EMAIL_CONFIRMATION', true),
 ];

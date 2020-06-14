@@ -1,65 +1,61 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\LogoutController;
 use LaravelLocalization as Lang;
 
 Route::prefix(Lang::setLocale())->middleware(['session', 'filter', 'view', 'localize'])->group(static function () {
-    // Authentication Routes...
-    Route::get(Lang::transRoute('routes.login'), 'Auth\LoginController@showLoginForm')->name('login');
-    Route::post(Lang::transRoute('routes.login'), 'Auth\LoginController@login');
-    Route::post(Lang::transRoute('routes.logout'), 'Auth\LoginController@logout')->name('logout');
+    // Routes with layout...
+    Route::layout('layouts.auth')->group(static function () {
+        Route::middleware('guest')->group(static function () {
+            // Authentication Routes...
+            Route::livewire(Lang::transRoute('routes.login'), 'auth.login')->name('login');
+            // Registration Routes...
+            if (config('settings.registration') ?? true) {
+                Route::livewire(Lang::transRoute('routes.register'), 'auth.register')->name('register');
+            }
+        });
 
-    // Registration Routes...
-    if (config('main.register') ?? true) {
-        Route::get(Lang::transRoute('routes.register'), 'Auth\RegisterController@showRegistrationForm')
-            ->name('register');
-        Route::post(Lang::transRoute('routes.register'), 'Auth\RegisterController@register');
-    }
+        // Password Reset Routes...
+        if (config('settings.reset_password') ?? true) {
+            Route::livewire(
+                Lang::transRoute('routes.password') . '/' . Lang::transRoute('routes.reset'),
+                'auth.passwords.email'
+            )->name('password.request');
+            Route::livewire(
+                Lang::transRoute('routes.password') . '/' . Lang::transRoute('routes.reset') . '/{token}',
+                'auth.passwords.reset'
+            )->name('password.reset');
+        }
 
-    // Password Reset Routes...
-    if (config('main.reset') ?? true) {
-        Route::get(
-            Lang::transRoute('routes.password').'/'.Lang::transRoute('routes.reset'),
-            'Auth\ForgotPasswordController@showLinkRequestForm'
-        )->name('password.request');
-        Route::post(
-            Lang::transRoute('routes.password').'/'.Lang::transRoute('routes.email'),
-            'Auth\ForgotPasswordController@sendResetLinkEmail'
-        )->name('password.email');
-        Route::get(
-            Lang::transRoute('routes.password').'/'.Lang::transRoute('routes.email').'/{token}',
-            'Auth\ResetPasswordController@showResetForm'
-        )->name('password.reset');
-        Route::post(
-            Lang::transRoute('routes.password').'/'.Lang::transRoute('routes.reset'),
-            'Auth\ResetPasswordController@reset'
-        )->name('password.update');
-    }
+        Route::middleware('auth')->group(static function () {
+            // Email Verification Routes...
+            if (config('settings.email_verification') ?? false) {
+                Route::livewire(
+                    Lang::transRoute('routes.email') . '/' . Lang::transRoute('routes.verify'),
+                    'auth.verify'
+                )->middleware('throttle:6,1')->name('verification.notice');
+            }
+            // Password Confirmation Routes...
+            if (config('settings.email_confirmation') ?? false) {
+                Route::livewire(
+                    Lang::transRoute('routes.password') . '/' . Lang::transRoute('routes.confirm'),
+                    'auth.passwords.confirm'
+                )->name('password.confirm');
+            }
+        });
+    });
 
-    // Password Confirmation Routes...
-    if (config('main.confirm') ?? false) {
-        Route::get(
-            Lang::transRoute('routes.password').'/'.Lang::transRoute('routes.confirm'),
-            'Auth\ConfirmPasswordController@showConfirmForm'
-        )->name('password.confirm');
-        Route::post(
-            Lang::transRoute('routes.password').'/'.Lang::transRoute('routes.confirm'),
-            'Auth\ConfirmPasswordController@confirm'
-        );
-    }
-
-    // Email Verification Routes...
-    if (config('main.verify') ?? false) {
-        Route::get(
-            Lang::transRoute('routes.email').'/'.Lang::transRoute('routes.verify'),
-            'Auth\VerificationController@show'
-        )->name('verification.notice');
-        Route::get(
-            Lang::transRoute('routes.email').'/'.Lang::transRoute('routes.verify').'/{id}/{hash}',
-            'Auth\VerificationController@verify'
-        )->name('verification.verify');
-        Route::post(
-            Lang::transRoute('routes.email').'/'.Lang::transRoute('routes.resend'),
-            'Auth\VerificationController@resend'
-        )->name('verification.resend');
-    }
+    Route::middleware('auth')->group(static function () {
+        // Email Verification Routes...
+        // Logout Routes...
+        Route::post(Lang::transRoute('routes.logout'), LogoutController::class)->name('logout');
+    });
 });
+
+if (config('settings.email_verification') ?? false) {
+    Route::get(
+        Lang::transRoute('routes.email') . '/' . Lang::transRoute('routes.verify') . '/{id}/{hash}',
+        EmailVerificationController::class
+    )->middleware('signed')->name('verification.verify');
+}
