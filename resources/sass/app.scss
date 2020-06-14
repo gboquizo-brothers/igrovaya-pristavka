@@ -49,3 +49,8 @@ input:invalid, textarea:invalid, select:invalid {
  * .bg-pattern-graph-paper { ... }
  * .skew-45 { ... }
  */
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
