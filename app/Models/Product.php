@@ -7,40 +7,23 @@ use App\Models\Translations\ProductTranslation;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 
 class Product extends Model implements TranslatableContract
 {
-    use Translatable, Uuidable, SoftDeletes;
+    use SoftDeletes;
+    use Translatable;
+    use Uuidable;
 
-    /**
-     * Name of translation model.
-     *
-     * @var string
-     */
-    public $translationModel = ProductTranslation::class;
-
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
     public $translatedAttributes = ['name'];
 
-    /**
-     * @return MorphTo
-     */
     public function productable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * @return BelongsToMany
-     */
     public function factories(): BelongsToMany
     {
         return $this->belongsToMany(Factory::class);

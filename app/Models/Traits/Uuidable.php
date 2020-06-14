@@ -9,7 +9,7 @@ trait Uuidable
     protected static function bootUuidable(): void
     {
         static::creating(static function ($model) {
-            if (!$model->getKey()) {
+            if (! $model->getKey()) {
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });

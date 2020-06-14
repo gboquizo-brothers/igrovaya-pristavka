@@ -10,47 +10,19 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Media extends Product
 {
-    use CastsEnums, Morphable;
+    use CastsEnums;
+    use Morphable;
 
-    /**
-     * The attributes that are morphables.
-     *
-     * @var array
-     */
-    protected $morphables = ['name'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = ['format' => 'string'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $morphables = ['name'];
     protected $fillable = ['format'];
-
-    /**
-     * Determine whether an attribute should be cast to a enum.
-     *
-     * @var array
-     */
     protected $enumCasts = ['format' => MediaFormatsEnum::class];
 
-    /**
-     * @return MorphTo
-     */
     public function mediable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * @return MorphOne
-     */
     public function product(): MorphOne
     {
         return $this->morphOne(Product::class, 'productable');
