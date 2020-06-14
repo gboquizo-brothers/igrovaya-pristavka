@@ -1,6 +1,5 @@
 <?php
 
-declare(strict_types=1);
 
 use App\Enums\MediaFormatsEnum;
 use Illuminate\Database\Migrations\Migration;
@@ -9,11 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateMediaTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up(): void
     {
         Schema::create('media', static function (Blueprint $table) {
@@ -25,11 +19,6 @@ class CreateMediaTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down(): void
     {
         Schema::dropIfExists('media');

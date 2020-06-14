@@ -10,5 +10,5 @@ return [
     'verify' => 'verificacion',
     'resend' => 'reenviar',
     'reset' => 'restablecer',
-    'confirm' => 'confirmar'
+    'confirm' => 'confirmar',
 ];
