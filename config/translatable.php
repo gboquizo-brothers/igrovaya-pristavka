@@ -1,5 +1,7 @@
 <?php
 
+use Astrotomic\Translatable\Validation\RuleFactory;
+
 return [
 
     /*
@@ -12,11 +14,7 @@ return [
     */
     'locales' => [
         'en',
-        'fr',
-        'es' => [
-            'MX', // mexican spanish
-            'CO', // colombian spanish
-        ],
+        'es',
     ],
 
     /*
@@ -96,7 +94,7 @@ return [
     | set this to 'App\Translations'.
     |
     */
-    'translation_model_namespace' => null,
+    'translation_model_namespace' => 'App\Models\Translations',
 
     /*
     |--------------------------------------------------------------------------
@@ -142,7 +140,7 @@ return [
      *
      */
     'rule_factory' => [
-        'format' => \Astrotomic\Translatable\Validation\RuleFactory::FORMAT_ARRAY,
+        'format' => RuleFactory::FORMAT_ARRAY,
         'prefix' => '%',
         'suffix' => '%',
     ],
